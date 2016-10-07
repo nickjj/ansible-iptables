@@ -5,6 +5,9 @@ python: "2.7"
 env:
   - SITE_AND_INVENTORY="tests/main.yml -i tests/inventory"
 
+before_install:
+  - "apt-get install systemd libpam-systemd systemd-ui"
+
 install:
   - "pip install ansible==2.1"
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
