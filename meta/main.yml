@@ -1,0 +1,22 @@
+---
+
+galaxy_info:
+  author: Nick Janetakis
+  description: Configure iptables
+  company:
+  license: license MIT
+  min_ansible_version: 2.0
+
+  platforms:
+  - name: Ubuntu
+    versions:
+    - xenial
+  - name: Debian
+    versions:
+    - jessie
+
+  categories:
+  - networking
+  - system
+
+dependencies: []

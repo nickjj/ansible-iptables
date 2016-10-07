@@ -1,0 +1,35 @@
+---
+
+- name: Create /var/lib/iptables directory
+  file:
+    path: '/var/lib/iptables'
+    state: 'directory'
+
+- name: Generate iptables config
+  template:
+    src: 'var/lib/iptables/rules-save.j2'
+    dest: '/var/lib/iptables/rules-save'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  register: iptables_register_config
+
+- name: Copy systemd unit file
+  copy:
+    src: 'etc/systemd/system/iptables-restore.service'
+    dest: '/etc/systemd/system/iptables-restore.service'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  register: iptables_register_unit
+
+- name: Reload systemd daemon
+  command: 'systemctl daemon-reload'
+  when: iptables_register_unit | changed
+
+- name: Restart iptables service
+  service:
+    name: 'iptables-restore'
+    state: 'restarted'
+    enabled: True
+  when: iptables_register_config | changed
