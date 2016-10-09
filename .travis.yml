@@ -26,16 +26,16 @@ script:
 
   - >
     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-    ansible-playbook /etc/ansible/roles/this_role/tests/test.yml
+    ansible-playbook /etc/ansible/roles/this_role/tests/main.yml
     --syntax-check
   - >
     docker exec --tty "$(cat ${container_id})" env TERM=xterm
-    ansible-playbook /etc/ansible/roles/this_role/tests/test.yml
+    ansible-playbook /etc/ansible/roles/this_role/tests/main.yml
 
   - idempotence=$(mktemp)
   - >
     docker exec "$(cat ${container_id})"
-    ansible-playbook /etc/ansible/roles/this_role/tests/test.yml
+    ansible-playbook /etc/ansible/roles/this_role/tests/main.yml
     | tee -a ${idempotence}
   - >
     tail ${idempotence}
