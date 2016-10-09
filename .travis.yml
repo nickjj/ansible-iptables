@@ -46,18 +46,18 @@ script:
   - >
     docker exec --tty "$(cat ${container_id})" env TERM=xterm
     sudo iptables -L
-    | grep -q '--dport 22'
+    | grep -q 'dpt:ssh'
     && (echo 'SSH is open test: pass' && exit 0)
     || (echo 'SSH is open test: fail' && exit 1)
   - >
     docker exec --tty "$(cat ${container_id})" env TERM=xterm
     sudo iptables -L
-    | grep -q '--dport 80'
+    | grep -q 'dpt:http'
     && (echo 'HTTP is open test: pass' && exit 0)
     || (echo 'HTTP is open test: fail' && exit 1)
   - >
     docker exec --tty "$(cat ${container_id})" env TERM=xterm
     sudo iptables -L
-    | grep -q '--dport 443'
+    | grep -q 'dpt:https'
     && (echo 'HTTPS is open test: pass' && exit 0)
     || (echo 'HTTPS is open test: fail' && exit 1)
