@@ -1,8 +1,6 @@
 ---
 
-- hosts: localhost
-  remote_user: travis
-  become: True
+- hosts: all
 
   roles:
-    - ansible-iptables
+    - this_role

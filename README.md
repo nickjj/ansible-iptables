@@ -2,6 +2,11 @@
 
 It is an [Ansible](http://www.ansible.com/home) role to configure iptables.
 
+##### Supported platforms:
+
+- Ubuntu 16.04 LTS (Xenial)
+- Debian 8 (Jessie)
+
 ### What problem does it solve and why is it useful?
 
 Locking down your server with a firewall is an important security step. This
@@ -95,10 +100,6 @@ iptables_config: |
 ## Installation
 
 `$ ansible-galaxy install nickjj.iptables`
-
-## Requirements
-
-Tested on ubuntu 16.04 LTS but it should work on Debian Jessie+ too.
 
 ## Ansible Galaxy
 
