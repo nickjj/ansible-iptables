@@ -2,39 +2,49 @@
 
 - name: Install iptables
   apt:
-    name: 'iptables'
-    state: 'present'
+    name: "iptables"
+    state: "present"
+    install_recommends: False
 
 - name: Create /var/lib/iptables directory
   file:
-    path: '/var/lib/iptables'
-    state: 'directory'
+    path: "/var/lib/iptables"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
 
 - name: Generate iptables config
   template:
-    src: 'var/lib/iptables/rules-save.j2'
-    dest: '/var/lib/iptables/rules-save'
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
+    src: "var/lib/iptables/rules-save.j2"
+    dest: "/var/lib/iptables/rules-save"
+    owner: "root"
+    group: "root"
+    mode: "0644"
   register: iptables_register_config
 
 - name: Copy systemd unit file
   copy:
-    src: 'etc/systemd/system/iptables-restore.service'
-    dest: '/etc/systemd/system/iptables-restore.service'
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
+    src: "etc/systemd/system/iptables-restore.service"
+    dest: "/etc/systemd/system/iptables-restore.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
   register: iptables_register_unit
 
 - name: Reload systemd daemon
-  command: 'systemctl daemon-reload'
+  command: "systemctl daemon-reload"
   when: iptables_register_unit | changed
 
 - name: Restart iptables service
   service:
-    name: 'iptables-restore'
-    state: 'restarted'
+    name: "iptables-restore"
+    state: "restarted"
     enabled: True
   when: iptables_register_config | changed
+
+- name: Restart dependent services
+  shell: test -f {{ item.path }}/{{ item.name }}.service \
+         && systemctl restart {{ item.name }}.service || true
+  with_items: "{{ iptables_restart_dependent_services }}"
+  when: iptables_restart_dependent_services and iptables_register_config | changed

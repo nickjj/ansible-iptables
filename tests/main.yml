@@ -1,11 +1,16 @@
 ---
 
-- hosts: all
+- hosts: "all"
 
   pre_tasks:
     - name: Update APT cache
       apt:
         update_cache: True
 
+    - name: Ensure iptables -L contains 'dpt:ssh|dpt:22'
+      shell: iptables -L
+      register: presence
+      failed_when: "'dpt:ssh|dpt:22' not in presence.dtdout"
+
   roles:
-    - this_role
+    - "role_under_test"

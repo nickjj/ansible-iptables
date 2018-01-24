@@ -1,6 +1,8 @@
+# {{ ansible_managed }}
+
 [Unit]
 Description=Restore iptables rules
-Before=network.target
+Before=network-pre.target
 Conflicts=shutdown.target
 
 [Service]
