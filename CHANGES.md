@@ -1,5 +1,15 @@
 # Changelog
 
+### v0.2.0
+
+*Released: January 25th 2018*
+
+- Remove port 80 / 443 from being open by default
+- Allow all ICMP traffic (you can ping your servers now)
+- Change systemd service to start before `network-pre.target` instead of `network.target`
+- Add proper tests and support for Ubuntu 16, Debian Stretch and Debian Jessie
+- Update format and style consistencies
+
 ### v0.1.2
 
 *Released: October 9th 2016*
