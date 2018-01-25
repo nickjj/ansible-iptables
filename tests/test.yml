@@ -1,0 +1,18 @@
+---
+
+- hosts: "all"
+
+  roles:
+    - "role_under_test"
+
+  pre_tasks:
+    - name: Update APT cache
+      apt:
+        update_cache: True
+        cache_valid_time: 600
+
+  post_tasks:
+    - name: Ensure iptables -L contains 'dpt:ssh or dpt:22'
+      shell: iptables -L | grep -E 'dpt:(ssh|22)'
+      register: result
+      changed_when: result.rc != 0
