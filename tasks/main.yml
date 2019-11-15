@@ -34,17 +34,17 @@
 
 - name: Reload systemd daemon
   command: "systemctl daemon-reload"
-  when: iptables_register_unit | changed
+  when: iptables_register_unit.changed
 
 - name: Restart iptables service
   service:
     name: "iptables-restore"
     state: "restarted"
     enabled: True
-  when: iptables_register_config | changed
+  when: iptables_register_config.changed
 
 - name: Restart dependent services
   shell: test -f {{ item.path }}/{{ item.name }}.service \
          && systemctl restart {{ item.name }}.service || true
   with_items: "{{ iptables_restart_dependent_services }}"
-  when: iptables_restart_dependent_services and iptables_register_config | changed
+  when: iptables_restart_dependent_services and iptables_register_config.changed
